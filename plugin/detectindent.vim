@@ -143,14 +143,16 @@ fun! <SID>DetectIndent()
     elseif l:has_leading_spaces && l:has_leading_tabs
         " spaces and tabs
         let l:verbose_msg = "Detected spaces and tabs"
-        setl noexpandtab
+        if !exists("g:detectindent_preferred_expandtab")
+            setl noexpandtab
+        endif
         let &l:shiftwidth = l:shortest_leading_spaces_run
 
         " mmmm, time to guess how big tabs are
         if l:longest_leading_spaces_run <= 2
             let &l:tabstop = 2
         elseif l:longest_leading_spaces_run <= 4
-            let &l:tabstop = 4
+            let &l:tabstop = 8
         else
             let &l:tabstop = 8
         endif
